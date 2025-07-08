@@ -1,4 +1,4 @@
-"use client"
+```"use client"
 
 import React, { useEffect, useState } from 'react';
 import Script from 'next/script';
@@ -71,7 +71,7 @@ export default function EmbedToast() {
   if (jwtToken) {
     return (
       <Script
-        src="/embed/toast.js"
+        src="https://cdn.jsdelivr.net/gh/romanyrefaat1/hooklify-widgets@main/widgets/toast/toast.js"
         strategy="afterInteractive"
         data-jwt-token={jwtToken}
         onLoad={() => {
@@ -87,4 +87,4 @@ export default function EmbedToast() {
 
   // If not loading, no error, and no token (shouldn't happen if error is handled), return null
   return null;
-};
+};```

@@ -7,7 +7,7 @@
   // Get JWT token from script attributes - this is the ONLY way to initialize the script
   const jwtToken = document.currentScript.getAttribute('data-jwt-token');
   // const NEXT_PUBLIC_APP_URL = "https://hooklify-doctorspte-gmailcoms-projects.vercel.app"
-  const NEXT_PUBLIC_APP_URL = "https://hooklify-n2laajc4t-doctorspte-gmailcoms-projects.vercel.app"
+  const NEXT_PUBLIC_APP_URL = "https://hooklify.vercel.app"
 
   // Log initial script start with redacted JWT for security
   console.log('[SocialProof] Script starting with JWT token (first 20 chars):', jwtToken ? jwtToken.substring(0, 20) + '...' : 'N/A');

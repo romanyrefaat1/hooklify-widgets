@@ -905,7 +905,7 @@
   // --- Main Initialization Flow ---
 
   // Validate that the JWT token is provided via the script attribute
-  if (!jwtToken) {
+  if (!jwtToken && !siteId && !widgetId) {
     console.error('[SocialProof] JWT token is required. Please provide jwt-token attribute.');
     return; // Stop script execution if essential parameter is missing
   }

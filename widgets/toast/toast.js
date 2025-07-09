@@ -733,7 +733,7 @@
   }
 
   function getCleanApiKey(apiKey, prefix) {
-  if (!apiKey) return null;
+  if (!apiKey) return null
   return apiKey.startsWith(prefix) ? apiKey.substring(prefix.length) : apiKey;
 }
 

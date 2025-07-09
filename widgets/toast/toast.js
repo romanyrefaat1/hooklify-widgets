@@ -732,7 +732,7 @@
     }
   }
 
-  function getCleanApiKey(apiKey: string, prefix: string) {
+  function getCleanApiKey(apiKey, prefix) {
   if (!apiKey) return null;
   return apiKey.startsWith(prefix) ? apiKey.substring(prefix.length) : apiKey;
 }

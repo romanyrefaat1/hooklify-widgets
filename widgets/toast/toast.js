@@ -9,7 +9,7 @@
   const widgetId = document.currentScript.getAttribute("data-widget-id");
   const siteId = document.currentScript.getAttribute("data-site-id")
   // const NEXT_PUBLIC_APP_URL = "https://hooklify-doctorspte-gmailcoms-projects.vercel.app"
-  const NEXT_PUBLIC_APP_URL = ""
+  const NEXT_PUBLIC_APP_URL = "https://hooklify.vercel.app"
 
   // Log initial script start with redacted JWT for security
   console.log('[SocialProof] Script starting with JWT token (first 20 chars):', jwtToken ? jwtToken.substring(0, 20) + '...' : 'N/A');

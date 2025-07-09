@@ -1,4 +1,4 @@
-"use client"
+```"use client"
 
 import React, { useEffect, useState } from 'react';
 import Script from 'next/script';
@@ -11,16 +11,16 @@ export default function EmbedToast() {
   useEffect(() => {
     const fetchToken = async () => {
       try {
-        const response = await fetch('/api/embed/auth/get-jwt', {
+        const response = await fetch('https://hooklify.vercel.app/api/embed/auth/get-jwt', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            "x-site-api-key": "site_c8911a3d-91af-4b22-b3ca-6d2cd5ae9720",
-            "x-widget-api-key": "widget_cbb3e67f-8245-4079-9214-16e1c48757df"
+            "x-site-api-key": "YOUR_SITE_API_KEY",
+            "x-widget-api-key": "YOUR_WIDGET_API_KEY"
           },
           body: JSON.stringify({
-            siteId: "site_2e36d662-2ce9-4b17-b742-315fabb0f4aa",
-            widgetId: "widget_29059f91-c1c5-40d4-9ff8-f21a4c6a1728"
+            siteId: "YOUR_SITE_ID",
+            widgetId: "YOUR_WIDGET_ID"
           })
         });
 
@@ -71,7 +71,7 @@ export default function EmbedToast() {
   if (jwtToken) {
     return (
       <Script
-        src="/embed/toast.js"
+        src="https://cdn.jsdelivr.net/gh/romanyrefaat1/hooklify-widgets@main/widgets/toast/toast.js"
         strategy="afterInteractive"
         data-jwt-token={jwtToken}
         onLoad={() => {
@@ -87,4 +87,4 @@ export default function EmbedToast() {
 
   // If not loading, no error, and no token (shouldn't happen if error is handled), return null
   return null;
-};
+};```

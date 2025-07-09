@@ -6,6 +6,8 @@
 
   // Get JWT token from script attributes - this is the ONLY way to initialize the script
   const jwtToken = document.currentScript.getAttribute('data-jwt-token');
+  const widgetId = document.currentScript.getAttribute("data-widget-id");
+  const siteId = document.currentScript.getAttribute("data-site-id")
   // const NEXT_PUBLIC_APP_URL = "https://hooklify-doctorspte-gmailcoms-projects.vercel.app"
   const NEXT_PUBLIC_APP_URL = ""
 
@@ -694,6 +696,8 @@
     displayNextEvent();
   }
 
+ 
+
   // --- JWT-based API calls (from previous response) ---
 
   /**
@@ -728,6 +732,11 @@
     }
   }
 
+  function getCleanApiKey(apiKey: string, prefix: string) {
+  if (!apiKey) return null;
+  return apiKey.startsWith(prefix) ? apiKey.substring(prefix.length) : apiKey;
+}
+
   /**
    * Initializes the widget by fetching its configuration and fallback events
    * from the backend using the JWT token. Handles token expiration and refresh.
@@ -738,12 +747,54 @@
     try {
       console.log('[SocialProof] Initializing widget with JWT token...');
 
+      // If user passed site id and widget id
+      if (siteId && widgetId) {
+       const { data: widgetData, error: widgetError } = await supabase
+      .from('widgets')
+      .select('*')
+      .eq('site_id', getCleanApiKey(siteId, "site_"))
+      .eq('id', getCleanApiKey(widgetId, "widget_"))
+      .single();
+
+
+      if (widgetError) {
+      console.error('Error fetching widget config:', widgetError);
+      return NextResponse.json({ error: 'Widget not found' }, { status: 404 });
+    }
+
+    const { data: eventsData, error: eventsError } = await supabase
+      .from('events')
+      .select('*')
+      .eq('site_id', getCleanApiKey(siteId, "site_"))
+      .order('timestamp', { ascending: false })
+      .limit(15);
+
+    if (eventsError) {
+      console.error('Error fetching events:', eventsError);
+      return;
+    }
+    data = {
+      siteId: getCleanApiKey(siteId, "site_"),
+      widgetConfig: widgetData,
+      fallbackEvents: eventsData || []
+    }
+    
+    currentSiteId = data.siteId;
+      currentWidgetId = data.widgetConfig.id;
+      currentWidgetConfig = data.widgetConfig;
+      fallbackEvents = data.fallbackEvents || [];
+ saveEventsToCache(fallbackEvents, currentSiteId, currentWidgetId, currentWidgetConfig);
+
+    return true;
+
+      }
+
       const response = await fetch(NEXT_PUBLIC_APP_URL+'/api/embed/events/initialize', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ jwtToken: currentJWTToken }) // Send JWT for authentication
+        body: JSON.stringify({ jwtToken: currentJWTToken, getCleanApiKey(siteId, "site_"), getCleanApiKey(widgetId, "widget_") }) // Send JWT for authentication
       });
 
       if (!response.ok) {

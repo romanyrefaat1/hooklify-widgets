@@ -781,11 +781,13 @@
         // Use cached data
         fallbackEvents = cachedData.events;
         currentWidgetConfig = cachedData.widgetConfig;
+        currentSiteId = cachedData.siteId; // Corrected line
+        currentWidgetId = cachedData.widgetId; // Added this line for consistency
         lastShownEventIndex = cachedData.lastShownIndex;
         console.log('[SocialProof] Using cached events and config:', fallbackEvents.length);
       } else {
         // Fetch fresh data from Supabase
-        console.log('[SocialProof] No valid cache, fetching fresh data...');
+        console.log('[SocialProof] No valid cache, fetching fresh data from Supabase...');
         const initSuccess = await initializeWidget();
         if (!initSuccess) {
           console.error('[SocialProof] Widget initialization failed. Aborting script.');
@@ -815,4 +817,25 @@
               console.error('[SocialProof] Subscription timed out');
               break;
             case 'CLOSED':
-              console.log('[
+              console.log('[SocialProof] Subscription closed');
+              break;
+          }
+        });
+
+      // Start the event display system
+      startEventDisplay();
+
+      // Removed startTokenRefresh() as JWT authentication is no longer used.
+
+    } catch (error) {
+      console.error('[SocialProof] Error during main initialization flow:', error);
+    }
+  };
+
+  scriptTag.onerror = () => {
+    console.error('[SocialProof] Failed to load Supabase script');
+  };
+
+  window.addEventListener('beforeunload', cleanup);
+  document.head.appendChild(scriptTag);
+})();
